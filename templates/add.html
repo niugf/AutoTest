@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建自动化测试任务</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<form action="/form/" method="post" class="smart-green">
+    <h1>任务信息
+        <span>请填写任务信息.</span>
+    </h1>
+    <label>
+        <span>标题 :</span>
+        <input id="title" type="text" name="title" class="error" placeholder="请输入标题"/>
+        <div class="error-msg"></div>
+    </label>
+    <label>
+        <span>创建人 :</span>
+        <input id="creater" type="text" name="creater" class="error" placeholder="请输入标题"/>
+        <div class="error-msg"></div>
+    </label>
+    <label>
+        <span>报告发送邮箱 :</span>
+        <input id="email" type="email" name="email" placeholder="请输入邮箱地址"/>
+        <div class="error-msg"></div>
+    </label>
+
+    <label>
+        <span>脚本路径 :</span>
+        <input id="path" type="text"  name="path" placeholder="请输入脚本路径 "/>
+        <div class="error-msg"></div>
+    </label>
+
+    <label>
+        <span>运行时间 :</span>
+        <input id="runtime" type="text" name="runtime"  placeholder="请输入运行时间" />
+        <div class="error-msg"></div>
+    </label>
+    <label>
+        <span>描述 :</span>
+        <textarea id="desc" type="text"  name="desc" placeholder="请输入脚本描述 "/></textarea>
+        <div class="error-msg"></div>
+    </label>
+    <div class="success-msg"></div>
+    <label>
+        <span>&nbsp;</span>
+        <input type="submit" class="button" value="提交"/>
+    </label>
+</form>
+</body>
+</html>

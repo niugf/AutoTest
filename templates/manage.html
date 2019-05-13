@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>autotest</title>
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui.theme.min.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/ui.jqgrid-bootstrap-ui.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/mystyle.css" />
+
+</head>
+<body>
+<div>
+<img src="/static/img/top.jpg" width="1340" height="180" /></div>
+<div align="center">
+<div class="button-right" align="right">
+    <a id='add' href='/form/'>&nbsp;<i class='fa fa-file-excel-o'> </i> 新增 &nbsp;</a> |
+    <a id='del' href='javascript:void(0);'>&nbsp;<i class='fa fa-check-square-o'> </i> 删除 &nbsp;</a> |
+    <a id='info' href='javascript:void(0);'>&nbsp;<i class='fa fa-search'></i> 查看详情 &nbsp;</a> |
+</div>
+<!--table width="1109" border="1" cellspacing="5" cellpadding="10"  id="grid-table"--><!--table-->
+<table id="grid-table"></table>
+<div id="grid-pager"></div>
+</div>
+<script src="/static/js/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/js/grid.locale-cn.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/js/jquery.jqGrid.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+   //当 datatype 为"local" 时需填写
+
+//   var grid_data = [
+//       {id: "00001",title: "测试",creater: "牛广发",email: "niugf@inspur.com",runtime: "201700430",case_path:"E:/123",
+//       desc:"测试自动化页面",timestamp :"201700430"}
+//       ];
+   var grid_data = {{ List|safe }};
+   var grid_selector = "#grid-table";
+   var pager_selector = "#grid-pager";
+
+    $(document).ready(function () {
+        $(window).resize(function() {
+			doGridLayout();
+		});
+
+       $("#grid-table").jqGrid({
+               data: grid_data,//当 datatype 为"local" 时需填写
+               datatype: "local", //数据来源，本地数据（local，json,jsonp,xml等）
+               height: 350,//高度，表格高度。可为数值、百分比或'auto'
+               //mtype:"GET",//提交方式
+               colNames: ['序号','标题', '描述', '创建人', '路径', '运行时间' ,'邮箱' ,'创建时间'],
+               colModel: [{
+                   name: 'cid',
+                   index: 'cid',//索引。其和后台交互的参数为sidx
+                   key: true,//当从服务器端返回的数据中没有id时，将此作为唯一rowid使用只有一个列可以做这项设置。如果设置多于一个，那么只选取第一个，其他被忽略
+                   width: 50,
+                   editable: false,
+                   editoptions: {
+                       size: "20",
+                       maxlength: "30"
+                   }
+               }, {
+                   name: 'title',
+                   index: 'title',
+                   width: 150,//宽度
+                   editable: false,//是否可编辑
+                   edittype: "text",//可以编辑的类型。可选值：text, textarea, select, checkbox, password, button, image and file.s
+                   editoptions: {
+                       size: "20",
+                       maxlength: "30"
+                   }
+               }, {
+                   name: 'desc',
+                   index: 'desc',
+                   width: 200,
+                   edittype: "textarea",
+                   editable: true
+               }, {
+                   name: 'creater',
+                   index: 'creater',
+                   width: 100,
+                   edittype: "text",
+                   editable: false,
+                   editoptions: {
+                       rows: "2",
+                       cols: "10"
+                   }
+               },{
+                   name: 'case_path',
+                   index: 'case_path',
+                   width: 250,
+                   sortable: false,
+                   editable: true,
+                   edittype: "text",
+                   editoptions: {
+                       rows: "2",
+                       cols: "10"
+                   }
+               },{
+                   name: 'run_time',
+                   index: 'run_time',
+                   width: 100,
+                   sortable: false,
+                   editable: true,
+                   edittype: "text",
+                   editoptions: {
+                       rows: "2",
+                       cols: "10"
+                   }
+               },{
+                   name: 'email',
+                   index: 'email',
+                   width: 200,
+                   sortable: false,
+                   editable: true,
+                   edittype: "textarea",
+                   editoptions: {
+                       rows: "2",
+                       cols: "10"
+                   }
+               },{
+                   name: 'timestamp',
+                   index: 'timestamp',
+                   width: 150,
+                   sortable: false,
+                   editable: true,
+                   edittype: "text",
+                   editoptions: {
+                       rows: "2",
+                       cols: "10"
+                   }
+               },],
+               viewrecords: true,//是否在浏览导航栏显示记录总数
+               rowNum: 10,//每页显示记录数
+               rowList: [10, 20, 30],//用于改变显示行数的下拉列表框的元素数组。
+               pager: pager_selector,//分页、按钮所在的浏览导航栏
+               altRows: true,//设置为交替行表格,默认为false
+               //toppager: true,//是否在上面显示浏览导航栏
+               multiselect: true,//是否多选
+               //multikey: "ctrlKey",//是否只能用Ctrl按键多选
+               multiboxonly: true,//是否只能点击复选框多选
+               // subGrid : true,
+               //sortname:'id',//默认的排序列名
+               //sortorder:'asc',//默认的排序方式（asc升序，desc降序）
+               caption: "自动化任务",//表名
+               autowidth: true//自动宽
+       });
+
+   });
+
+$(function(){
+    $("#del").click(function(){
+        var ids=$('#grid-table').jqGrid('getGridParam','selarrrow');
+        console.log(ids)
+        if(ids.length === 0 ){
+            alert("请先选择数据",{title:"提示"});
+        }else {
+            var cids=new Array();
+            for(var i=0; ids.length > i; i++){
+                var rowData = $("#grid-table").jqGrid('getRowData',ids[i]);
+                cids.push(rowData.cid);
+            }
+            //var cid = JSON.stringify(ids);
+            console.log("cids===="+cids)
+            $.ajax({
+                dataType: "json",
+                url: "/ajax_del/",
+                type: "POST",
+                data: {cids:cids.join(",")},
+                success: function (data) {
+                    if (data.status == 1) {
+                        alert("删除成功");
+                    } else {
+                        alert(data["result"]);
+                    }
+                }
+            });
+        }
+    })
+    $("#info").click(function(){
+        var ids=$('#grid-table').jqGrid('getGridParam','selarrrow');
+        console.log(ids)
+        if(ids.length == 0 || ids.length > 1){
+            layer.alert("请选择一条数据进行操作",{title:"提示"});
+        }else {
+             window.location.replace("/ajax_getlog?id="+ids);
+        }
+    })
+    function reloadGrid(){
+		$("#jqGrid_table").setGridParam({postData:{
+
+        }}).trigger("reloadGrid");
+	}
+
+})
+
+</script>
+</body>
+</html>
